@@ -6,26 +6,32 @@ using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 public struct Board
 {
-    public Square[,] grid;
-    public Board(int row,int col)
+    Square[,] grid;
+
+    public Board(int rows, int cols)
     {
-        grid = new Square[row, col];
-        for (int i = 0; i < row; i++)
+        grid = new Square[rows, cols];
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < col; j++)
+            for (int j = 0; j < cols; j++)
             {
                 grid[i, j] = new Square(i, j);
             }
         }
     }
-    public ref Square GetCoord(int row, int cols) => ref grid[row,cols];
+
+    public ref Square GetSquare(int row, int col) => ref grid[row, col];
 }
+
 public struct Square
 {
-    int2 coord;
-    public Square(int posX, int posY)
+    int2 coor;
+    public Piece piece;
+
+    public Square(int x, int y)
     {
-        coord = new int2(posX, posY);
-    }   
-    public int2 Coord  => coord;
+        coor = new int2(x, y);
+        piece = null;
+    }
+    public int2 Coor => coor;
 }
