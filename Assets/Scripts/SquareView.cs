@@ -1,14 +1,27 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SquareView : MonoBehaviour
 {
     TextMeshProUGUI text;
     string squareCoorText;
-    
+    [SerializeField]Image imageComponent;
+
+    [Header("Sprites")]
+    [SerializeField] Sprite pawnSprite;
+    [SerializeField] Sprite spearSprite;
+    [SerializeField] Sprite horseSprite;
+    [SerializeField] Sprite silverSprite;
+    [SerializeField] Sprite goldSprite;
+    [SerializeField] Sprite towerSprite;
+    [SerializeField] Sprite bishopSprite;
+    [SerializeField] Sprite kingWhiteSprite;
+    [SerializeField] Sprite kingBlackSprite;
     private void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();
+        imageComponent.enabled = false;
     }
 
     public void SetSquare(int x, int y)
@@ -19,45 +32,32 @@ public class SquareView : MonoBehaviour
 
     public void AddPiece(ref Piece piece)
     {
-        switch (piece.type) {
-            case PieceType.Pawn:
-                text.text = "P";
-                break;
-            case PieceType.Spear:
-                text.text = "S";
-                break;
-            case PieceType.Horse:
-                text.text = "H";
-                break;
-            case PieceType.Silver:
-                text.text= "Si";
-                break;
-            case PieceType.Gold:
-                text.text = "G";
-                break;
-            case PieceType.Tower:
-                text.text = "T";
-                break;
-            case PieceType.Bishop:
-                text.text = "B";
-                break;
-            case PieceType.King:
-                text.text = "K";
-                break;
-        }
-        switch (piece.team) {
-            case Team.White:
-                text.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
-                break;
-            case Team.Black:
-                text.gameObject.transform.rotation = Quaternion.Euler(0, 0, 180);
-                break;
-        }
+        text.enabled = false;
+        imageComponent.enabled = true;
+
+        imageComponent.sprite = piece.type switch
+        {
+            PieceType.Pawn => pawnSprite,
+            PieceType.Spear => spearSprite,
+            PieceType.Horse => horseSprite,
+            PieceType.Silver => silverSprite,
+            PieceType.Gold => goldSprite,
+            PieceType.Tower => towerSprite,
+            PieceType.Bishop => bishopSprite,
+            PieceType.King => piece.team==Team.White ? kingWhiteSprite : kingBlackSprite,
+            _=>null
+        };
+       imageComponent.gameObject.transform.rotation = piece.team switch { 
+           Team.White => Quaternion.Euler(0,0,0),
+           Team.Black => Quaternion.Euler(0,0,180),
+           _ =>Quaternion.identity
+       };
+        
     }
 
     public void RemovePiece()
     {
-        text.text=squareCoorText;
-        text.gameObject.transform.rotation=Quaternion.Euler(0, 0,0);
+        text.enabled = true;
+        imageComponent.enabled = false;
     }
 }
