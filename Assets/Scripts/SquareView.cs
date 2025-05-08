@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +7,9 @@ public class SquareView : MonoBehaviour
 {
     TextMeshProUGUI text;
     string squareCoorText;
-    [SerializeField]Image imageComponent;
-
+    [SerializeField] Image imageComponent;
+    View view;
+    Button buttonComponent;
     [Header("Sprites")]
     [SerializeField] Sprite pawnSprite;
     [SerializeField] Sprite spearSprite;
@@ -18,16 +20,22 @@ public class SquareView : MonoBehaviour
     [SerializeField] Sprite bishopSprite;
     [SerializeField] Sprite kingWhiteSprite;
     [SerializeField] Sprite kingBlackSprite;
+
+    int2 gridPos;
     private void Awake()
     {
         text = GetComponentInChildren<TextMeshProUGUI>();
+        buttonComponent = GetComponent<Button>();
         imageComponent.enabled = false;
     }
 
-    public void SetSquare(int x, int y)
+    public void SetSquare(int x, int y,View view)
     {
-        squareCoorText = $"{x},{y}";
-        text.text = squareCoorText;
+        this.view = view;
+        //squareCoorText = $"{x},{y}";
+        gridPos=new int2(x,y);
+        text.text = $"{x},{y}";
+        
     }
 
     public void AddPiece(ref Piece piece)
@@ -59,5 +67,19 @@ public class SquareView : MonoBehaviour
     {
         text.enabled = true;
         imageComponent.enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        buttonComponent.onClick.AddListener(OnSelectSquare);
+    }
+
+    private void OnDisable()
+    {
+        buttonComponent.onClick.RemoveListener(OnSelectSquare);
+    }
+    void OnSelectSquare()
+    {
+        view?.SelectSquare(gridPos);
     }
 }
