@@ -7,7 +7,8 @@ public class View : MonoBehaviour
     Controller controller;
     [SerializeField] GameObject cellPrefab;
     [SerializeField] Transform parentGrid;
-
+    [SerializeField] CementeryView whiteCementery;
+    [SerializeField] CementeryView blackCementery;
     SquareView[,] gridView;
 
     private void Awake()
@@ -44,5 +45,11 @@ public class View : MonoBehaviour
     {
         controller.SelectSquare(gridPos);
         Debug.Log(gridPos);
+    }
+
+    public void UpdateCementery(Team team,PieceType pieceType,int count)
+    {
+        if(team == Team.White) whiteCementery.UpdateCellView(pieceType, count);
+        else blackCementery.UpdateCellView(pieceType, count);
     }
 }

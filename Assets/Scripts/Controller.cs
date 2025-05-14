@@ -13,11 +13,15 @@ public class Controller
     const int COLS = 9;
 
     Team currentTurn = Team.White;
+    Player whitePlayer;
+    Player blackPlayer;
     public Controller(View view)
     {
         this.view = view;
         board = new Board(ROWS, COLS);
         view.CreateGrid(ref board, ROWS, COLS);
+        whitePlayer = new Player(Team.White);
+        blackPlayer = new Player(Team.Black);
         SetBoard();
 
     }
@@ -120,7 +124,7 @@ public class Controller
             else if (selectedSquare.piece.team == currentTurn) selectedPiece = selectedSquare.piece;
             else
             {
-                EatPiece(selectedSquare.Coor);
+                EatPiece(selectedSquare.piece);
                 MoveSelectedPiece(selectedSquare);
             }
         }
@@ -131,10 +135,45 @@ public class Controller
             selectedPiece = selectedSquare.piece;
         }
     }
-    void EatPiece(int2 coor)
+    void EatPiece(Piece eatenPiece)
     {
+        eatenPiece.coor = new int2(-1, -1);
+        eatenPiece.team = currentTurn;
+        Player currentPlayer = currentTurn == Team.White ? whitePlayer : blackPlayer;
 
-    }
+        switch (eatenPiece.type)
+        {
+            case PieceType.Pawn:
+                currentPlayer.sideBoard.pawns.Enqueue((Pawn)eatenPiece);
+                view.UpdateCementery(currentTurn, eatenPiece.type, currentPlayer.sideBoard.pawns.Count);
+                break;
+            case PieceType.Spear:
+                currentPlayer.sideBoard.spears.Enqueue((Spear)eatenPiece);
+                view.UpdateCementery(currentTurn, eatenPiece.type, currentPlayer.sideBoard.spears.Count);
+                break;
+            case PieceType.Horse:
+                currentPlayer.sideBoard.horses.Enqueue((Horse)eatenPiece);
+                view.UpdateCementery(currentTurn, eatenPiece.type, currentPlayer.sideBoard.horses.Count);
+                break;
+            case PieceType.Silver:
+                currentPlayer.sideBoard.silvers.Enqueue((Silver)eatenPiece);
+                view.UpdateCementery(currentTurn, eatenPiece.type, currentPlayer.sideBoard.silvers.Count);
+                break;
+            case PieceType.Gold:
+                currentPlayer.sideBoard.golds.Enqueue((Gold)eatenPiece);
+                view.UpdateCementery(currentTurn, eatenPiece.type, currentPlayer.sideBoard.golds.Count);
+                break;
+            case PieceType.Tower:
+                currentPlayer.sideBoard.towers.Enqueue((Tower)eatenPiece);
+                view.UpdateCementery(currentTurn, eatenPiece.type, currentPlayer.sideBoard.towers.Count);
+                break;
+            case PieceType.Bishop:
+                currentPlayer.sideBoard.bishops.Enqueue((Bishop)eatenPiece);
+                view.UpdateCementery(currentTurn, eatenPiece.type, currentPlayer.sideBoard.bishops.Count);
+                break;
+        }
+
+        }
     private void MoveSelectedPiece(Square selectedSquare)
     {
         RemovePiece(selectedPiece.coor);

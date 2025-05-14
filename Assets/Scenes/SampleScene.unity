@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Name
-      value: DeadPiece
+      value: Spear
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Sprite
@@ -254,7 +254,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Name
-      value: DeadPiece (1)
+      value: Horse
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Sprite
@@ -379,7 +379,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Name
-      value: DeadPiece (4)
+      value: Tower
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Sprite
@@ -735,7 +735,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Name
-      value: DeadPiece
+      value: Bishop
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Sprite
@@ -852,7 +852,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Name
-      value: DeadPieceBlack (1)
+      value: Spear
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Sprite
@@ -970,7 +970,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Name
-      value: DeadPieceBlack (5)
+      value: Tower
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Sprite
@@ -1134,7 +1134,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Name
-      value: DeadPieceBlack (2)
+      value: Horse
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Sprite
@@ -1257,7 +1257,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Name
-      value: DeadPieceBlack (4)
+      value: Gold
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Sprite
@@ -1375,7 +1375,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Name
-      value: DeadPiece (2)
+      value: Silver
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Sprite
@@ -1579,6 +1579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1291578752}
   - component: {fileID: 1291578753}
+  - component: {fileID: 1291578754}
   m_Layer: 5
   m_Name: BlackCementery
   m_TagString: Untagged
@@ -1636,6 +1637,25 @@ MonoBehaviour:
   m_Spacing: {x: 60, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1291578754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291578751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c98e652a720f14943b199b9a703cff7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pawnView: {fileID: 0}
+  spearView: {fileID: 0}
+  horseView: {fileID: 0}
+  silverView: {fileID: 0}
+  goldView: {fileID: 0}
+  towerView: {fileID: 0}
+  bishopView: {fileID: 0}
 --- !u!224 &1341960238 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7638043883868808158, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
@@ -1651,7 +1671,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Name
-      value: DeadPieceBlack
+      value: Pawn
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Sprite
@@ -1769,7 +1789,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Name
-      value: DeadPieceBlack (3)
+      value: Silver
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Sprite
@@ -1947,6 +1967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1593856874}
   - component: {fileID: 1593856875}
+  - component: {fileID: 1593856876}
   m_Layer: 5
   m_Name: WhiteCemenery
   m_TagString: Untagged
@@ -1977,8 +1998,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -333, y: -440}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 19.0375, y: -440}
+  m_SizeDelta: {x: 804.0751, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1593856875
 MonoBehaviour:
@@ -2004,6 +2025,25 @@ MonoBehaviour:
   m_Spacing: {x: 60, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1593856876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593856873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c98e652a720f14943b199b9a703cff7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pawnView: {fileID: 0}
+  spearView: {fileID: 0}
+  horseView: {fileID: 0}
+  silverView: {fileID: 0}
+  goldView: {fileID: 0}
+  towerView: {fileID: 0}
+  bishopView: {fileID: 0}
 --- !u!1001 &1635810448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2014,7 +2054,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Name
-      value: DeadPiece (3)
+      value: Gold
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Sprite
@@ -2144,7 +2184,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_Name
-      value: DeadPiece (3)
+      value: Pawn
       objectReference: {fileID: 0}
     - target: {fileID: 4201706646058764129, guid: 09f3f300f2947304980ceff8d563143f, type: 3}
       propertyPath: m_text
@@ -2281,7 +2321,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1661788543918694358, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Name
-      value: DeadPieceBlack (6)
+      value: Bishop
       objectReference: {fileID: 0}
     - target: {fileID: 4385551335679183202, guid: ad38c5394a630d3469570c17cbf8827f, type: 3}
       propertyPath: m_Sprite
