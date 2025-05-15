@@ -16,22 +16,41 @@ public class View : MonoBehaviour
         controller = new Controller(this);
 
     }
-    public void CreateGrid(ref Board board, int rows, int cols)
+    private void Start()
     {
-        gridView = new SquareView[rows, cols];
-        // if (controller == null) { return; }
+        whiteCementery.SetCementeryView(this);
+        blackCementery.SetCementeryView(this);
+    }
 
-        for (int i = 0; i < rows; i++)
+    public void EnableTeamCementary(Team team)
+    {
+        if (team == Team.White)
         {
-            for (int j = 0; j < cols; j++)
-            {
-                gridView[i, j] = Instantiate(cellPrefab, parentGrid).GetComponent<SquareView>();
-                int2 coor = board.GetSquare(i, j).Coor;
-                gridView[i, j].SetSquare(coor.x, coor.y,this);
-
-            }
+            whiteCementery.EnableCementaryView();
+            blackCementery.EnableCementaryView(false);
+        }
+        else
+        {
+            whiteCementery.EnableCementaryView(false);
+            blackCementery.EnableCementaryView();
         }
     }
+            public void CreateGrid(ref Board board, int rows, int cols)
+            {
+                gridView = new SquareView[rows, cols];
+                // if (controller == null) { return; }
+
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < cols; j++)
+                    {
+                        gridView[i, j] = Instantiate(cellPrefab, parentGrid).GetComponent<SquareView>();
+                        int2 coor = board.GetSquare(i, j).Coor;
+                        gridView[i, j].SetSquare(coor.x, coor.y, this);
+
+                    }
+                }
+            }
     public void AddPiece(ref Piece piece, int2 coor)
     {
         gridView[coor.x, coor.y].AddPiece(ref piece);
@@ -51,5 +70,9 @@ public class View : MonoBehaviour
     {
         if(team == Team.White) whiteCementery.UpdateCellView(pieceType, count);
         else blackCementery.UpdateCellView(pieceType, count);
+    }
+    public void SelectCementeryPiece(PieceType pieceType)
+    {
+        controller.SelectCementeryPiece(pieceType);
     }
 }

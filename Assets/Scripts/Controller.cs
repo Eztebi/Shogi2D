@@ -23,6 +23,7 @@ public class Controller
         whitePlayer = new Player(Team.White);
         blackPlayer = new Player(Team.Black);
         SetBoard();
+        view.EnableTeamCementary(currentTurn);
 
     }
     void SetBoard()
@@ -118,13 +119,21 @@ public class Controller
     public void SelectSquare(int2 gridPos)
     {
         ref Square selectedSquare = ref board.GetSquare(gridPos.x,gridPos.y);
-
-        if (selectedPiece != null) {
-            if (selectedSquare.piece == null) MoveSelectedPiece(selectedSquare);
-            else if (selectedSquare.piece.team == currentTurn) selectedPiece = selectedSquare.piece;
-            else
+        if (selectedPiece != null)
+        {
+            if (selectedSquare.piece == null)
+            { //MOVER
+                if (selectedPiece.coor.x < 0) UpdateCementeryCount(selectedPiece.type);
+                MoveSelectedPiece(selectedSquare);
+            }
+            else if (selectedSquare.piece.team == currentTurn)//cambiar de seleccion
             {
-                EatPiece(selectedSquare.piece);
+                if (selectedPiece.coor.x < 0) EatPiece(ref selectedPiece);
+                selectedPiece = selectedSquare.piece;
+            }
+            else if (selectedPiece.coor.x >= 0)//comer
+            {
+                EatPiece(ref selectedSquare.piece);
                 MoveSelectedPiece(selectedSquare);
             }
         }
@@ -135,7 +144,23 @@ public class Controller
             selectedPiece = selectedSquare.piece;
         }
     }
-    void EatPiece(Piece eatenPiece)
+    public void SelectCementeryPiece(PieceType pieceType) 
+    {
+        Player currentPlayer = currentTurn == Team.White ? whitePlayer : blackPlayer;
+        selectedPiece = pieceType switch
+        {
+            PieceType.Pawn => currentPlayer.sideBoard.pawns.Dequeue(),
+            PieceType.Spear => currentPlayer.sideBoard.spears.Dequeue(),
+            PieceType.Horse => currentPlayer.sideBoard.horses.Dequeue(),
+            PieceType.Silver => currentPlayer.sideBoard.silvers.Dequeue(),
+            PieceType.Gold => currentPlayer.sideBoard.golds.Dequeue(),
+            PieceType.Tower => currentPlayer.sideBoard.towers.Dequeue(),
+            PieceType.Bishop => currentPlayer.sideBoard.bishops.Dequeue(),
+            _ => null
+        };
+            
+    }
+    void EatPiece(ref Piece eatenPiece)
     {
         eatenPiece.coor = new int2(-1, -1);
         eatenPiece.team = currentTurn;
@@ -173,10 +198,41 @@ public class Controller
                 break;
         }
 
+    }
+
+    void UpdateCementeryCount(PieceType pieceType)
+    {
+        Player currentPlayer = currentTurn == Team.White ? whitePlayer : blackPlayer;
+
+        switch (pieceType)
+        {
+            case PieceType.Pawn:
+                view.UpdateCementery(currentTurn, pieceType, currentPlayer.sideBoard.pawns.Count);
+                break;
+            case PieceType.Spear:
+                view.UpdateCementery(currentTurn, pieceType, currentPlayer.sideBoard.spears.Count);
+                break;
+            case PieceType.Horse:
+                view.UpdateCementery(currentTurn, pieceType, currentPlayer.sideBoard.horses.Count);
+                break;
+            case PieceType.Silver:
+                view.UpdateCementery(currentTurn, pieceType, currentPlayer.sideBoard.silvers.Count);
+                break;
+            case PieceType.Gold:
+                view.UpdateCementery(currentTurn, pieceType, currentPlayer.sideBoard.golds.Count);
+                break;
+            case PieceType.Tower:
+                view.UpdateCementery(currentTurn, pieceType, currentPlayer.sideBoard.towers.Count);
+                break;
+            case PieceType.Bishop:
+                view.UpdateCementery(currentTurn, pieceType, currentPlayer.sideBoard.bishops.Count);
+                break;
         }
+
+    }
     private void MoveSelectedPiece(Square selectedSquare)
     {
-        RemovePiece(selectedPiece.coor);
+        if(selectedPiece.coor.x>=0) RemovePiece(selectedPiece.coor);
         AddPiece(ref selectedPiece, selectedSquare.Coor);
         selectedPiece = null;
     }
