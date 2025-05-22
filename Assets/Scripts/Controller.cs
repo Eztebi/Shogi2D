@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Net;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor.ShaderGraph.Internal;
@@ -11,7 +13,7 @@ public class Controller
     Piece selectedPiece=null;   
     const int ROWS = 9;
     const int COLS = 9;
-
+    List<int2> validMoves = new List<int2>();
     Team currentTurn = Team.White;
     Player whitePlayer;
     Player blackPlayer;
@@ -123,25 +125,85 @@ public class Controller
         {
             if (selectedSquare.piece == null)
             { //MOVER
+                if(!IsValidMove(selectedSquare.Coor) && selectedPiece.coor.x>=0) return;
                 if (selectedPiece.coor.x < 0) UpdateCementeryCount(selectedPiece.type);
                 MoveSelectedPiece(selectedSquare);
+                SwitchTeam();
             }
             else if (selectedSquare.piece.team == currentTurn)//cambiar de seleccion
             {
                 if (selectedPiece.coor.x < 0) EatPiece(ref selectedPiece);
-                selectedPiece = selectedSquare.piece;
+                SelectNewPiece(selectedSquare.piece);
             }
             else if (selectedPiece.coor.x >= 0)//comer
             {
+                if (!IsValidMove(selectedSquare.Coor)) return;
                 EatPiece(ref selectedSquare.piece);
                 MoveSelectedPiece(selectedSquare);
+                SwitchTeam();
             }
         }
         else
         {
             if (selectedSquare.piece == null) return;
             if (selectedSquare.piece.team != currentTurn) return;
-            selectedPiece = selectedSquare.piece;
+            SelectNewPiece(selectedSquare.piece);
+        }
+    }
+    void SwitchTeam()
+    {
+        currentTurn = currentTurn == Team.White ? Team.Black : Team.White;
+        view.EnableTeamCementary(currentTurn);
+    }
+    bool IsValidMove(int2 move)
+    {
+        foreach(int2 validMove in validMoves){
+            if (move.x != validMove.x) continue;
+            if (move.y == validMove.y) return true;
+        }
+        return false;
+    }
+    void SelectNewPiece(Piece piece)
+    {
+        selectedPiece = piece;
+        validMoves.Clear();
+        List<int2> piecesMoves = selectedPiece.GetMoves();
+        int2 pieceCoor = selectedPiece.coor;
+        if (selectedPiece.GetType().IsSubclassOf(typeof(SingleMovePiece)))
+        {
+            foreach (int2 move in piecesMoves)
+            {
+                int2 newCoor = move;
+                newCoor.x = move.x;
+                newCoor.y = currentTurn == Team.White ? move.y : -move.y;
+                newCoor += pieceCoor;
+                if (newCoor.x < 0 || newCoor.x >= ROWS) continue;
+                if (newCoor.y < 0 || newCoor.y >= ROWS) continue;
+                if (board.GetSquare(newCoor.x, newCoor.y).piece != null)
+                {
+                    if (board.GetSquare(newCoor.x, newCoor.y).piece.team == currentTurn) continue;
+                }
+                validMoves.Add(newCoor);
+            }
+        }else if (selectedPiece.GetType().IsSubclassOf(typeof(DirectionalMovePiece)))
+        {
+            foreach(int2 direction in piecesMoves)
+            {
+                for (int i = 1; i <= 8; i++)
+                {
+                    int2 newCoor = pieceCoor + direction * i;
+                    if (newCoor.x < 0 || newCoor.x >= ROWS) break;
+                    if (newCoor.y < 0 || newCoor.y >= ROWS) break;
+                    if (board.GetSquare(newCoor.x, newCoor.y).piece != null)
+                    {
+                        if (board.GetSquare(newCoor.x, newCoor.y).piece.team == currentTurn) break;
+                        validMoves.Add(newCoor);
+                        break;
+                    }
+                    validMoves.Add(newCoor);
+                }
+
+            }
         }
     }
     public void SelectCementeryPiece(PieceType pieceType) 

@@ -38,7 +38,6 @@ public class View : MonoBehaviour
             public void CreateGrid(ref Board board, int rows, int cols)
             {
                 gridView = new SquareView[rows, cols];
-                // if (controller == null) { return; }
 
                 for (int i = 0; i < rows; i++)
                 {
