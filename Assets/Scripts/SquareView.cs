@@ -21,6 +21,14 @@ public class SquareView : MonoBehaviour
     [SerializeField] Sprite kingWhiteSprite;
     [SerializeField] Sprite kingBlackSprite;
 
+    [Header("Upgraded sprites")]
+    [SerializeField] Sprite UppawnSprite;
+    [SerializeField] Sprite UpspearSprite;
+    [SerializeField] Sprite UphorseSprite;
+    [SerializeField] Sprite UpsilverSprite;
+    [SerializeField] Sprite UptowerSprite;
+    [SerializeField] Sprite UpbishopSprite;
+
     int2 gridPos;
     private void Awake()
     {
@@ -53,7 +61,13 @@ public class SquareView : MonoBehaviour
             PieceType.Tower => towerSprite,
             PieceType.Bishop => bishopSprite,
             PieceType.King => piece.team==Team.White ? kingWhiteSprite : kingBlackSprite,
-            _=>null
+            PieceType.UpPawn => UppawnSprite,
+            PieceType.UpSpear => UpspearSprite,
+            PieceType.UpHorse => UphorseSprite,
+            PieceType.UpSilver => UpsilverSprite,
+            PieceType.UpTower => UptowerSprite,
+            PieceType.UpBishop => UpbishopSprite,
+            _ =>null
         };
        imageComponent.gameObject.transform.rotation = piece.team switch { 
            Team.White => Quaternion.Euler(0,0,0),

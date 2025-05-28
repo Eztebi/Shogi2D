@@ -101,6 +101,12 @@ MonoBehaviour:
   bishopSprite: {fileID: 3103866428455670401, guid: b88999b8d5f419447b499c3eb1411fd6, type: 3}
   kingWhiteSprite: {fileID: 7575764933053759680, guid: 93d00f534cb827a44b7331f0251222e6, type: 3}
   kingBlackSprite: {fileID: 7575764933053759680, guid: 93d00f534cb827a44b7331f0251222e6, type: 3}
+  UppawnSprite: {fileID: -6598673669626798191, guid: d8199859bde253043b1a1ea387d61f2c, type: 3}
+  UpspearSprite: {fileID: 617059792269008053, guid: 4d7fc5354dfba774db0ca51df7a57ec1, type: 3}
+  UphorseSprite: {fileID: 4628292974156955509, guid: d2df55112c2bd804b808e0ec69662e48, type: 3}
+  UpsilverSprite: {fileID: -650564387062455364, guid: ede3cb20c458d644aba49d416ae150dc, type: 3}
+  UptowerSprite: {fileID: -1048535021995686568, guid: 6e2d48f380a8ca0469d6024b0370a5c3, type: 3}
+  UpbishopSprite: {fileID: -1948114729964165869, guid: 3f2e709284d672545b555071ff44f1df, type: 3}
 --- !u!114 &4913310624592919216
 MonoBehaviour:
   m_ObjectHideFlags: 0

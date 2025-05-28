@@ -32,6 +32,27 @@ public class Controller
     {
         BlackPieces();
         WhitePieces();
+        //pawn upg
+        CreatePiece(new int2(5,5),PieceType.Pawn,Team.Black);
+        UpgradePiece(board.GetSquare(5,5).piece);
+        //spear upg
+        CreatePiece(new int2(4, 5), PieceType.Spear, Team.Black);
+        UpgradePiece(board.GetSquare(4, 5).piece);
+        //horse upg
+        CreatePiece(new int2(3, 5), PieceType.Horse, Team.Black);
+        UpgradePiece(board.GetSquare(3, 5).piece);
+        //silver upg
+        CreatePiece(new int2(2, 5), PieceType.Silver, Team.Black);
+        UpgradePiece(board.GetSquare(2, 5).piece);
+        //tower upg
+        CreatePiece(new int2(1, 5), PieceType.Tower, Team.Black);
+        UpgradePiece(board.GetSquare(1, 5).piece);
+        //bishop upg
+        CreatePiece(new int2(0, 5), PieceType.Bishop, Team.Black);
+        UpgradePiece(board.GetSquare(0, 5).piece);
+
+
+
     }
     void BlackPieces()
     {
@@ -226,6 +247,16 @@ public class Controller
     {
         eatenPiece.coor = new int2(-1, -1);
         eatenPiece.team = currentTurn;
+
+        if (eatenPiece.upgradable)
+        {
+            eatenPiece.otherSidePiece.team = currentTurn;
+        }
+        if (eatenPiece.GetType().IsSubclassOf(typeof(UpgradedPiece))) {
+            eatenPiece.otherSidePiece.team = currentTurn;
+            eatenPiece = eatenPiece.otherSidePiece;
+        }
+
         Player currentPlayer = currentTurn == Team.White ? whitePlayer : blackPlayer;
 
         switch (eatenPiece.type)
@@ -300,6 +331,13 @@ public class Controller
     }
 
     ~Controller() { }
-
-
+    #region Piece Upgrading
+    void UpgradePiece(Piece pieceToUpgrade)
+    {
+        if (!pieceToUpgrade.upgradable) return;
+        RemovePiece(pieceToUpgrade.coor);
+        AddPiece(ref pieceToUpgrade.otherSidePiece, pieceToUpgrade.coor);
+        pieceToUpgrade.coor = new int2(-1, -1);
+    }
+    #endregion
 }
