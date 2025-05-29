@@ -33,23 +33,29 @@ public class Controller
         BlackPieces();
         WhitePieces();
         //pawn upg
-        CreatePiece(new int2(5,5),PieceType.Pawn,Team.Black);
-        UpgradePiece(board.GetSquare(5,5).piece);
-        //spear upg
-        CreatePiece(new int2(4, 5), PieceType.Spear, Team.Black);
-        UpgradePiece(board.GetSquare(4, 5).piece);
-        //horse upg
-        CreatePiece(new int2(3, 5), PieceType.Horse, Team.Black);
-        UpgradePiece(board.GetSquare(3, 5).piece);
-        //silver upg
-        CreatePiece(new int2(2, 5), PieceType.Silver, Team.Black);
-        UpgradePiece(board.GetSquare(2, 5).piece);
-        //tower upg
-        CreatePiece(new int2(1, 5), PieceType.Tower, Team.Black);
-        UpgradePiece(board.GetSquare(1, 5).piece);
-        //bishop upg
-        CreatePiece(new int2(0, 5), PieceType.Bishop, Team.Black);
-        UpgradePiece(board.GetSquare(0, 5).piece);
+        //CreatePiece(new int2(5,5),PieceType.Pawn,Team.Black);
+        ////spear upg
+        //CreatePiece(new int2(4, 5), PieceType.Spear, Team.Black);
+        ////horse upg
+        //CreatePiece(new int2(3, 5), PieceType.Horse, Team.Black);
+        ////silver upg
+        //CreatePiece(new int2(2, 5), PieceType.Silver, Team.Black);
+        ////tower upg
+        //CreatePiece(new int2(1, 5), PieceType.Tower, Team.Black);
+        ////bishop upg
+        //CreatePiece(new int2(0, 5), PieceType.Bishop, Team.Black);
+        ////pawn upg
+        //CreatePiece(new int2(5, 3), PieceType.Pawn, Team.White);
+        ////spear upg
+        //CreatePiece(new int2(4, 3), PieceType.Spear, Team.White);
+        ////horse upg
+        //CreatePiece(new int2(3, 3), PieceType.Horse, Team.White);
+        ////silver upg
+        //CreatePiece(new int2(2, 3), PieceType.Silver, Team.White);
+        ////tower upg
+        //CreatePiece(new int2(1, 3), PieceType.Tower, Team.White);
+        ////bishop upg
+        //CreatePiece(new int2(0, 3), PieceType.Bishop, Team.White);
 
 
 
@@ -190,7 +196,42 @@ public class Controller
         validMoves.Clear();
         List<int2> piecesMoves = selectedPiece.GetMoves();
         int2 pieceCoor = selectedPiece.coor;
-        if (selectedPiece.GetType().IsSubclassOf(typeof(SingleMovePiece)))
+
+        if (selectedPiece.GetType().IsSubclassOf(typeof(ComplexUpgradedPiece))) {
+            ComplexUpgradedPiece complexUpgradedPiece = (ComplexUpgradedPiece)piece;
+            foreach (int2 move in complexUpgradedPiece.GetComplexMoves().moves)
+            {
+                int2 newCoor = move;
+                newCoor.x = move.x;
+                newCoor.y = currentTurn == Team.White ? move.y : -move.y;
+                newCoor += pieceCoor;
+                if (newCoor.x < 0 || newCoor.x >= ROWS) continue;
+                if (newCoor.y < 0 || newCoor.y >= ROWS) continue;
+                if (board.GetSquare(newCoor.x, newCoor.y).piece != null)
+                {
+                    if (board.GetSquare(newCoor.x, newCoor.y).piece.team == currentTurn) continue;
+                }
+                validMoves.Add(newCoor);
+            }
+            foreach (int2 direction in complexUpgradedPiece.GetComplexMoves().directions)
+            {
+                for (int i = 1; i <= 8; i++)
+                {
+                    int2 newCoor = pieceCoor + direction * i;
+                    if (newCoor.x < 0 || newCoor.x >= ROWS) break;
+                    if (newCoor.y < 0 || newCoor.y >= ROWS) break;
+                    if (board.GetSquare(newCoor.x, newCoor.y).piece != null)
+                    {
+                        if (board.GetSquare(newCoor.x, newCoor.y).piece.team == currentTurn) break;
+                        validMoves.Add(newCoor);
+                        break;
+                    }
+                    validMoves.Add(newCoor);
+                }
+
+            }
+        }
+        else if (selectedPiece.GetType().IsSubclassOf(typeof(SingleMovePiece)))
         {
             foreach (int2 move in piecesMoves)
             {
@@ -206,7 +247,8 @@ public class Controller
                 }
                 validMoves.Add(newCoor);
             }
-        }else if (selectedPiece.GetType().IsSubclassOf(typeof(DirectionalMovePiece)))
+        }
+        else if (selectedPiece.GetType().IsSubclassOf(typeof(DirectionalMovePiece)))
         {
             foreach(int2 direction in piecesMoves)
             {
@@ -245,6 +287,10 @@ public class Controller
     }
     void EatPiece(ref Piece eatenPiece)
     {
+        if (eatenPiece.type == PieceType.King)
+        {
+            string win = currentTurn == Team.White ? "whitePlayer wins" : "blackPlayer wins";
+        }
         eatenPiece.coor = new int2(-1, -1);
         eatenPiece.team = currentTurn;
 
@@ -325,8 +371,10 @@ public class Controller
     }
     private void MoveSelectedPiece(Square selectedSquare)
     {
+        int2 prevPos = selectedPiece.coor;
         if(selectedPiece.coor.x>=0) RemovePiece(selectedPiece.coor);
         AddPiece(ref selectedPiece, selectedSquare.Coor);
+        CheckForUpgradable(selectedPiece,prevPos);
         selectedPiece = null;
     }
 
@@ -338,6 +386,21 @@ public class Controller
         RemovePiece(pieceToUpgrade.coor);
         AddPiece(ref pieceToUpgrade.otherSidePiece, pieceToUpgrade.coor);
         pieceToUpgrade.coor = new int2(-1, -1);
+    }
+    void CheckForUpgradable(Piece pieceToUpgrade,int2 previusPos)
+    {
+        if(!pieceToUpgrade.upgradable) return;
+        if (previusPos.y < 0) return;
+        {
+            
+        }
+        int upperEnemyRow = currentTurn == Team.White ? 0 : ROWS - 3;
+        int lowerEnemyRow = currentTurn == Team.White ? 3 : ROWS - 3;
+
+        int pieceRow = pieceToUpgrade.coor.y;
+
+        if (pieceRow <= upperEnemyRow && pieceRow >= lowerEnemyRow) UpgradePiece(pieceToUpgrade);
+        else if (previusPos.y >= upperEnemyRow && previusPos.y <= lowerEnemyRow) UpgradePiece(pieceToUpgrade);
     }
     #endregion
 }
